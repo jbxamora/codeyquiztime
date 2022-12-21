@@ -1,0 +1,26 @@
+* {
+    font-family: 'Impact', sans-serif;
+}
+
+body {
+    background-color: rgb(5, 6, 6);
+}
+
+body {
+    text-align: center;
+    color: antiquewhite;
+    margin: auto;
+    width: 800px;
+    height: 900px;
+    border: 3px solid white;
+    padding: 10px;
+    
+}
+
+main {
+    top: auto;
+    bottom: 0;
+}
+#timer {
+    padding: 20px;
+}
