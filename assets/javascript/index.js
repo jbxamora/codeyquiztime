@@ -18,8 +18,8 @@ var highscoreInput = document.querySelector("#initials");
 var highscoreForm = document.querySelector("#highform");
 var highscoreList = document.querySelector("#highlist");
 var clearScore = document.querySelector("#clearscore");
-var questionCount = 0;
-
+var questionDiv = document.querySelector("#question")
+let questionCount = 0;
 
 // Event Listener for Start Button 
 startBtn.addEventListener("click", startQuiz);
@@ -52,18 +52,45 @@ function setQuestionText(questionText) {
     document.getElementById("question").textContent = questionText
 }
 
-function setQuestionChoices(choices) {
-    choices.innerHTML = " ";
-    for (var i in choices) {
-        var ansChoice = document.createElement("button");
-        ansChoice.addEventListener("click", function (event){
+function setQuestionChoices(question) {
+    document.getElementById("question").textContent = questionBank[questionCount].questionText;
+
+    var choiceContainer = document.getElementById("choices");
+    choiceContainer.innerHTML = "";
+
+    for (var i = 0; i < questionBank[questionCount].answerChoices.length; i++) {
+        var choiceBtn = document.createElement("button");
+        choiceBtn.textContent = questionBank[questionCount].answerChoices[i];
+        choiceBtn.addEventListener("click", function (event) {
         ChoiceMade(event.target);
         });
-        var ansChoices = document.createTextNode(choices[i]);
-        decision.appendChild(ansChoices);
-        choices.appendChild(choices);
+        choiceContainer.appendChild(choiceBtn);
     }
 }
+
+
+// function setQuestionChoices(choices) {
+//     choices.innerHTML = " ";
+//     for (var i in choices) {
+//         var ansChoice = document.createElement("button");
+//         ansChoice.addEventListener("click", function (event){
+//         ChoiceMade(event.target);
+//         });
+//         var ansChoices = document.createTextNode(choices[i]);
+//         decision.appendChild(ansChoices);
+//         choices.appendChild(choices);
+//     }
+// }
+
+function correctAnswer(answer) {
+  return (
+    answer ===
+    questionBank[questionCount].answerChoices[
+      questionBank[questionCount].correctAnswer
+    ]
+  );
+}
+
 
 function ChoiceMade(target) {
     if (questionCount === questionBank.length - 1) {
@@ -79,7 +106,8 @@ function ChoiceMade(target) {
 }
 
 function checkAccuracy(target) {
-    if (target.textContent === questionBank[questionCount].correctAnswer) {
+    // var = correctAnswer = questionBank[questionCount].correctAnswer;
+    if (target.textContent === questionBank[questionCount].answerChoices[correctAnswer]) {
         decision.textContent = decision.getAttribute("data-correct");
     } else {
         decision.textContent = decision.getAttribute("data-wrong");
@@ -89,7 +117,8 @@ function checkAccuracy(target) {
 
 function incrementQuestion() {
     questionCount++;
-    setQuestionText(questionBank[questionCount]);
+    setQuestionText(questionBank[questionCount].questionText);
+    setQuestionChoices(questionBank[questionCount]);
 }
 
 highscoreForm.addEventListener("submit", function (event) {
@@ -145,6 +174,8 @@ function endQuiz() {
     questionCount = 0;
     clearInterval(timeInterval);
 }
+
+
 
 const questionBank = [
   {
