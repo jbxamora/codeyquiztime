@@ -56,8 +56,38 @@ function setQuestionChoices(Choices) {
         var Choices = document.createElement("button");
         Choices.addEventListener("click", function (event){
             
-        })
+        });
+        var answerChoices = document.createTextNode(answerChoices[i]);
+        decision.appendChild(answerChoices);
+        answerChoices.appendChild(answerChoices);
     }
+}
+
+function ChoiceMade(target) {
+    if (questionCount === questionBank.length - 1) {
+        endQuiz();
+        return;
+    }
+    checkAccuracy(target);
+    incrementQuestion();
+    var toastInterval = setInterval(function () {
+        decision.textContent = "";
+        clearInterval(toastInterval);
+    }, 1000)
+}
+
+function checkAccuracy(target) {
+    if (target.textContent === questionBank[questionCount].correctAnswer) {
+        decision.textContent = decision.getAttribute("data-correct");
+    } else {
+        decision.textContent = decision.getAttribute("data-wrong");
+        mainTimer -= 5;
+    }
+}
+
+function incrementQuestion() {
+    questionCount++;
+    setQuestionText(questionBank[questionCount]);
 }
 
 highscoreForm.addEventListener("submit", function (event) {
@@ -107,4 +137,9 @@ function setTimer() {
         }
         
     }, 1000)
+}
+
+function endQuiz() {
+    questionCount = 0;
+    clearInterval(timeInterval);
 }
