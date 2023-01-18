@@ -1,23 +1,54 @@
 // Import Data From My Question Bank
 import questionBank from "./Qbank";
+console.log(questionBank)
 // Declare Variables
-let startBtn = document.querySelector("#strbtn");
-let timer = document.querySelector("#timer");
-let time = document.querySelector("#time");
+var startBtn = document.querySelector("#strbtn");
+var restartBtn = document.querySelector("#restartbtn");
+var timer = document.querySelector("#timer");
+var time = document.querySelector("#time");
 var mainTimer = 6100;
 var questionInit = 0;
 var highscores = [];
 var timeInterval = "";
 var choices = document.querySelector("#Choices");
 var correctAnswer = document.querySelector("#checkAnswer");
-let decision = document.querySelector("#decision");
-let main = document.querySelector("#container");
-let question = document.querySelector("#question")
-let highscore = document.querySelector("#hiddenhs");
-let highscoreInput = document.querySelector("#initials");
-let highscoreForm = document.querySelector("#highform");
-let highscoreList = document.querySelector("#highlist");
-let clearScore = document.querySelector("#clearscore");
+var decision = document.querySelector("#decision");
+var main = document.querySelector("#container");
+var questionEl = document.querySelector("#question")
+var highscore = document.querySelector("#hiddenhs");
+var highscoreInput = document.querySelector("#initials");
+var highscoreForm = document.querySelector("#highform");
+var highscoreList = document.querySelector("#highlist");
+var clearScore = document.querySelector("#clearscore");
+
+startBtn.addEventListener("click", startQuiz);
+
+function startQuiz() {
+    startBtn.setAttribute("id", "displayQ")
+    questionInit = 0;
+    setTimer();
+    setQuestionChoices(questionBank[questionCount]);
+}
+restartBtn.addEventListener("click", restartQuiz);
+
+function restartQuiz() {
+    mainTimer = 61;
+    questionInit = 0;
+    setTimer();
+    setQuestion(questionBank[questionCount]);
+    highscoreInput.disabled = false
+
+}
+
+highscoreForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    var highscoreInput = highscoreInput.value.trim();
+    if (highscoreInput === "") {
+        return;
+    }
+
+})
+
 
 function setQuestionText(questionText) {
     document.getElementById("question").textContent = questionText
