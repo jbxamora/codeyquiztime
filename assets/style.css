@@ -24,3 +24,12 @@ main {
 #timer {
     padding: 20px;
 }
+
+button {
+ background-color: black;
+ border-color: aquamarine;
+ margin: 10px;
+ color: antiquewhite;
+
+
+}

@@ -1,6 +1,3 @@
-// Import Data From My Question Bank
-// import questionBank from "./Qbank";
-// console.log(questionBank)
 // Declare Variables
 var startBtn = document.querySelector("#strbtn");
 var restartBtn = document.querySelector("#restartbtn");
@@ -31,20 +28,20 @@ function startQuiz() {
     setQuestionChoices(questionBank[questionCount]);
 }
 
-// Event Listener for Restart Button
-restartBtn.addEventListener("click", restartQuiz);
-// Restart Quiz Function
-function restartQuiz() {
-    main.setAttribute("id", "container");
-    highscore.setAttribute("id", "hiddenhs")
-    highscoreForm.setAttribute("id", "highform")
-    mainTimer = 61;
-    questionInit = 0;
-    setTimer();
-    setQuestion(questionBank[questionCount]);
-    highscoreInput.disabled = false
+// // Event Listener for Restart Button
+// restartBtn.addEventListener("click", restartQuiz);
+// // Restart Quiz Function
+// function restartQuiz() {
+//     main.setAttribute("id", "container");
+//     highscore.setAttribute("id", "hiddenhs")
+//     highscoreForm.setAttribute("id", "highform")
+//     mainTimer = 61;
+//     questionInit = 0;
+//     setTimer();
+//     setQuestionChoices(questionBank[questionCount]);
+//     highscoreInput.disabled = false
 
-}
+// }
 
 
 
@@ -52,6 +49,7 @@ function setQuestionText(questionText) {
     document.getElementById("question").textContent = questionText
 }
 
+// This function displays the current Question
 function setQuestionChoices(question) {
     document.getElementById("question").textContent = questionBank[questionCount].questionText;
 
@@ -68,20 +66,7 @@ function setQuestionChoices(question) {
     }
 }
 
-
-// function setQuestionChoices(choices) {
-//     choices.innerHTML = " ";
-//     for (var i in choices) {
-//         var ansChoice = document.createElement("button");
-//         ansChoice.addEventListener("click", function (event){
-//         ChoiceMade(event.target);
-//         });
-//         var ansChoices = document.createTextNode(choices[i]);
-//         decision.appendChild(ansChoices);
-//         choices.appendChild(choices);
-//     }
-// }
-
+// Function that finds the correct answer for the current question
 function correctAnswer(answer) {
   return (
     answer ===
@@ -91,7 +76,7 @@ function correctAnswer(answer) {
   );
 }
 
-
+// Function to lock in user selection and compare to Qbank
 function ChoiceMade(target) {
     if (questionCount === questionBank.length) {
         endQuiz();
@@ -104,7 +89,7 @@ function ChoiceMade(target) {
         clearInterval(toastInterval);
     }, 1000)
 }
-
+// Checks wether or not the answer is correct according to tthe questionBank
 function checkAccuracy(target) {
     // var = correctAnswer = questionBank[questionCount].correctAnswer;
     if (target.textContent === questionBank[questionCount].answerChoices[correctAnswer]) {
@@ -115,30 +100,33 @@ function checkAccuracy(target) {
     }
 }
 
+// Makes sure the quiz ends when the last question has been asked
 function incrementQuestion() {
     questionCount++;
-    if(questionCount === questionBank.length) {
+    if(questionCount >= questionBank.length) {
         endQuiz();
         return;
     }
-    setQuestionChoices();
+    setQuestionChoices(questionBank[questionCount]);
 }
 
+// Event Listener for Highscore submit Button.
 highscoreForm.addEventListener("submit", function (event) {
     event.preventDefault();
-    var highscoreInput = highscoreInput.value.trim();
+    var highscoreInit = highscoreInput.value.trim();
     if (highscoreInput === "") {
         return;
     }
-    storeHighscore(highscoreInput);
+    storeHighscore(highscoreInit);
     renderHighscore();
     mainTimer = 61;
     highscoreInput.value = "";
     highscoreInput.disabled = true;
-
 });
 
 
+
+// Stores highscore in localstorage and sorts them.
 function storeHighscore(initials) {
     highscores.push({
         initials,
@@ -146,8 +134,9 @@ function storeHighscore(initials) {
     });
     highscores.sort((a, b) => b.score - a.score);
     localStorage.setItem("highscores", JSON.stringify(highscores));
+    console.log(initials)
 }
-
+// Creates an Li element in the HTML to display the current highscore.
 function renderHighscore() {
     highscoreList.innerHTML = "";
     for (var highscore of highscores) {
@@ -157,10 +146,12 @@ function renderHighscore() {
     }
 }
 
-function clearScore() {
-    highscores = [];
-    renderHighscore();
-}
+// function clearScore() {
+//     highscores = [];
+//     renderHighscore();
+// }
+
+// Binds timer to HTML page and ends the quiz when time runs below 0
 function setTimer() {
     timeInterval = setInterval(function () {
         mainTimer--;
@@ -171,10 +162,10 @@ function setTimer() {
 
         }
         
-    }, 1000)
+    }, 1000);
 }
 
-
+// Function to end Quiz 
 function endQuiz() {
   clearInterval(timeInterval);
   questionCount = 0;
@@ -188,11 +179,11 @@ function endQuiz() {
   document.getElementById("final-score").textContent =
     "Your final score is: " + mainTimer;
   document.getElementById("final-score").style.display = "block";
-  document.getElementById("restartbtn").style.display = "block";
+  // document.getElementById("restartbtn").style.display = "block";
 }
 
 
-
+// Question Bank for the quiz, Can add/remove questions as time passes.
 const questionBank = [
   {
     questionText: "What does the method split do to a string?",
