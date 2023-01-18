@@ -6,7 +6,7 @@ var startBtn = document.querySelector("#strbtn");
 var restartBtn = document.querySelector("#restartbtn");
 var timer = document.querySelector("#timer");
 var time = document.querySelector("#time");
-var mainTimer = 6100;
+var mainTimer = 61;
 var questionInit = 0;
 var highscores = [];
 var timeInterval = "";
@@ -21,16 +21,20 @@ var highscoreForm = document.querySelector("#highform");
 var highscoreList = document.querySelector("#highlist");
 var clearScore = document.querySelector("#clearscore");
 
-startBtn.addEventListener("click", startQuiz);
 
+// Event Listener for Start Button 
+startBtn.addEventListener("click", startQuiz);
+// Start Quiz Function
 function startQuiz() {
     startBtn.setAttribute("id", "displayQ")
     questionInit = 0;
     setTimer();
     setQuestionChoices(questionBank[questionCount]);
 }
-restartBtn.addEventListener("click", restartQuiz);
 
+// Event Listener for Restart Button
+restartBtn.addEventListener("click", restartQuiz);
+// Restart Quiz Function
 function restartQuiz() {
     mainTimer = 61;
     questionInit = 0;
@@ -40,14 +44,6 @@ function restartQuiz() {
 
 }
 
-highscoreForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-    var highscoreInput = highscoreInput.value.trim();
-    if (highscoreInput === "") {
-        return;
-    }
-
-})
 
 
 function setQuestionText(questionText) {
@@ -59,9 +55,46 @@ function setQuestionChoices(Choices) {
     for (var i in Choices) {
         var Choices = document.createElement("button");
         Choices.addEventListener("click", function (event){
-           
+            
         })
     }
+}
+
+highscoreForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    var highscoreInput = highscoreInput.value.trim();
+    if (highscoreInput === "") {
+        return;
+    }
+    storeHighscore(highscoreInput);
+    renderHighscore();
+    mainTimer = 61;
+    highscoreInput.value = "";
+    highscoreInput.disabled = true;
+
+});
+
+function storeHighscore(initials) {
+    highscores.push({
+        initials,
+        score: mainTimer,
+    });
+    highscores.sort((a, b) => b.score - a.score);
+    localStorage.setItem("highscores", JSON.stringify(highscores));
+}
+
+function renderHighscore() {
+    highscoreList.innerHTML = "";
+    for (var highscore of highscores) {
+        var li = document.createElement("li")
+        li.textContent = highscore.initials + ": " + highscore.score;
+        highscoreList.appendChild(li);
+    }
+}
+
+function clearScore() {
+    highscores = [];
+    renderHighscore();
 }
 function setTimer() {
     timeInterval = setInterval(function () {
