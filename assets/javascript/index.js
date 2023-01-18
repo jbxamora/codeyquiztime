@@ -93,7 +93,7 @@ function correctAnswer(answer) {
 
 
 function ChoiceMade(target) {
-    if (questionCount === questionBank.length - 1) {
+    if (questionCount === questionBank.length) {
         endQuiz();
         return;
     }
@@ -117,8 +117,11 @@ function checkAccuracy(target) {
 
 function incrementQuestion() {
     questionCount++;
-    setQuestionText(questionBank[questionCount].questionText);
-    setQuestionChoices(questionBank[questionCount]);
+    if(questionCount === questionBank.length) {
+        endQuiz();
+        return;
+    }
+    setQuestionChoices();
 }
 
 highscoreForm.addEventListener("submit", function (event) {
@@ -134,6 +137,7 @@ highscoreForm.addEventListener("submit", function (event) {
     highscoreInput.disabled = true;
 
 });
+
 
 function storeHighscore(initials) {
     highscores.push({
@@ -170,9 +174,21 @@ function setTimer() {
     }, 1000)
 }
 
+
 function endQuiz() {
-    questionCount = 0;
-    clearInterval(timeInterval);
+  clearInterval(timeInterval);
+  questionCount = 0;
+  mainTimer = 61;
+  // reset the quiz elements
+  decision.textContent = "";
+  questionDiv.style.display = "none";
+  document.getElementById("choices").style.display = "none";
+  document.getElementById("timer").style.display = "none";
+  // show the final score or message
+  document.getElementById("final-score").textContent =
+    "Your final score is: " + mainTimer;
+  document.getElementById("final-score").style.display = "block";
+  document.getElementById("restartbtn").style.display = "block";
 }
 
 
